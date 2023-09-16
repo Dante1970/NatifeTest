@@ -75,6 +75,14 @@ class PostsViewController: UIViewController {
 
 extension PostsViewController: UITableViewDelegate {
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let selectedCell = vm.posts[indexPath.row]
+        
+        let destination = PostDetailViewController(postID: selectedCell.postID)
+        
+        navigationController?.pushViewController(destination, animated: true)
+    }
 }
 
 // MARK: - UITableViewDataSource
