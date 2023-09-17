@@ -9,8 +9,12 @@ import Foundation
 
 class PostListViewModel {
     
+    var state: ViewModelState = .initial
+    
+    weak var delegate: ViewModelDelegate?
+    
     var posts: [Post] = []
-    var updateUI: (() -> ())?
+    
     lazy var sortingOptions = [
         ("Time ⬆", { self.posts.sort { $0.timeshamp < $1.timeshamp } }),
         ("Time ⬇", { self.posts.sort { $0.timeshamp > $1.timeshamp } }),
@@ -18,17 +22,24 @@ class PostListViewModel {
         ("Likes ⬇", { self.posts.sort { $0.likesCount > $1.likesCount } })
     ]
     
-    func getPosts() {
+    func getPostList() {
+        state = .loading
+        self.delegate?.didUpdateState()
+        
         guard let url = URL(string: Constants.postsURL) else { return }
         
-        DataService.shared.get(url: url) { (result: Result<MainResponse, Error>) in
+        DataService.shared.get(url: url) { [weak self] (result: Result<MainResponse, Error>) in
+            guard let self = self else { return }
+            
             switch result {
             case .success(let posts):
                 self.posts = posts.posts
-                self.updateUI?()
+                self.state = .loaded
             case .failure(let error):
-                print("Error getting data. \(error)")
+                self.state = .error(message: "Error getting data. \(error)")
             }
+            
+            self.delegate?.didUpdateState()
         }
     }
 }

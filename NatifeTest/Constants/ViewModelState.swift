@@ -1,0 +1,15 @@
+//
+//  ViewModelState.swift
+//  NatifeTest
+//
+//  Created by Сергей Белоусов on 17.09.2023.
+//
+
+import Foundation
+
+enum ViewModelState {
+    case initial
+    case loading
+    case loaded
+    case error(message: String)
+}

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PostListViewController: UIViewController {
+class PostListViewController: UIViewController, ViewModelDelegate {
     
     private let vm = PostListViewModel()
     
@@ -16,28 +16,69 @@ class PostListViewController: UIViewController {
         tableView.register(PostListTableViewCell.self, forCellReuseIdentifier: PostListTableViewCell.identifier)
         tableView.separatorStyle = .none
         tableView.rowHeight = UITableView.automaticDimension
+        tableView.backgroundColor = ColorTheme.background
         return tableView
     }()
+    
+    private var activityIndicator = UIActivityIndicatorView(style: .large)
+    
+    // MARK: - viewDidLoad
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        vm.updateUI = { [weak self] in
-            DispatchQueue.main.async {
-                self?.tableView.reloadData()
-            }
+        updateUI()
+    }
+    
+    // MARK: - Public func
+    
+    func didUpdateState() {
+        DispatchQueue.main.async { [weak self] in
+            self?.updateUI()
         }
-        vm.getPosts()
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        
-        configureUI()
     }
     
     // MARK: - Private func
     
+    private func updateUI() {
+        switch vm.state {
+        case .initial:
+            
+            activityIndicator.isHidden = true
+            
+            tableView.isHidden = true
+            tableView.delegate = self
+            tableView.dataSource = self
+            
+            vm.delegate = self
+            vm.getPostList()
+
+            configureUI()
+            
+        case .loading:
+            activityIndicator.isHidden = false
+            activityIndicator.startAnimating()
+            tableView.isHidden = true
+        case .loaded:
+            tableView.isHidden = false
+            activityIndicator.isHidden = true
+            activityIndicator.stopAnimating()
+            tableView.reloadData()
+        case .error(let message):
+            tableView.isHidden = true
+            activityIndicator.isHidden = true
+            activityIndicator.stopAnimating()
+            print(message)
+        }
+    }
+    
     private func configureUI() {
+        view.backgroundColor = ColorTheme.background
+        configureNavigationBar()
+        addSubview()
+        setupConstraints()
+    }
+    
+    private func configureNavigationBar() {
         navigationItem.title = "Posts"
         
         let sortButton = UIBarButtonItem(
@@ -46,10 +87,20 @@ class PostListViewController: UIViewController {
             target: self,
             action: #selector(showSortAlert))
         navigationItem.rightBarButtonItem = sortButton
-        
-        tableView.backgroundColor = ColorTheme.background
-        
+    }
+    
+    private func addSubview() {
+        view.addSubview(activityIndicator)
         view.addSubview(tableView)
+    }
+    
+    private func setupConstraints() {
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
     }
     
     @objc private func showSortAlert() {
@@ -71,21 +122,18 @@ class PostListViewController: UIViewController {
 
 }
 
-// MARK: - UITableViewDelegate
+// MARK: - extension UITableViewDelegate
 
 extension PostListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         let selectedCell = vm.posts[indexPath.row]
-        
         let destination = PostDetailsViewController(postID: selectedCell.postID)
-        
         navigationController?.pushViewController(destination, animated: true)
     }
 }
 
-// MARK: - UITableViewDataSource
+// MARK: -  extension UITableViewDataSource
 
 extension PostListViewController: UITableViewDataSource {
     

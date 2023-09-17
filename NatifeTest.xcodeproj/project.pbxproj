@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BE2361E32AB736BD0034D0EA /* ViewModelState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2361E22AB736BD0034D0EA /* ViewModelState.swift */; };
+		BE2361E62AB737010034D0EA /* ViewModelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2361E52AB737010034D0EA /* ViewModelDelegate.swift */; };
 		BE66F84C2AB4CCC6000F8C3F /* ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE66F84B2AB4CCC6000F8C3F /* ColorTheme.swift */; };
 		BE66F84F2AB5DBB2000F8C3F /* DateStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE66F84E2AB5DBB2000F8C3F /* DateStackView.swift */; };
 		BE66F8512AB5DEF9000F8C3F /* LikesStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE66F8502AB5DEF9000F8C3F /* LikesStackView.swift */; };
@@ -27,6 +29,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BE2361E22AB736BD0034D0EA /* ViewModelState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelState.swift; sourceTree = "<group>"; };
+		BE2361E52AB737010034D0EA /* ViewModelDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelDelegate.swift; sourceTree = "<group>"; };
 		BE66F84B2AB4CCC6000F8C3F /* ColorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTheme.swift; sourceTree = "<group>"; };
 		BE66F84E2AB5DBB2000F8C3F /* DateStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateStackView.swift; sourceTree = "<group>"; };
 		BE66F8502AB5DEF9000F8C3F /* LikesStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikesStackView.swift; sourceTree = "<group>"; };
@@ -59,6 +63,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BE2361E42AB736D80034D0EA /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				BE2361E52AB737010034D0EA /* ViewModelDelegate.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		BE66F84D2AB5DB80000F8C3F /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -98,6 +110,7 @@
 			children = (
 				BECFD5C52AB44D2400C2B203 /* AppDelegate.swift */,
 				BECFD5C72AB44D2400C2B203 /* SceneDelegate.swift */,
+				BE2361E42AB736D80034D0EA /* Protocols */,
 				BECFD5E72AB4659800C2B203 /* Constants */,
 				BECFD5E42AB4607E00C2B203 /* Services */,
 				BECFD5DA2AB4536800C2B203 /* Models */,
@@ -151,6 +164,7 @@
 			children = (
 				BE66F84B2AB4CCC6000F8C3F /* ColorTheme.swift */,
 				BECFD5E82AB465A400C2B203 /* Constants.swift */,
+				BE2361E22AB736BD0034D0EA /* ViewModelState.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -236,9 +250,11 @@
 				BECFD5E12AB45D6000C2B203 /* PostListViewModel.swift in Sources */,
 				BE66F84F2AB5DBB2000F8C3F /* DateStackView.swift in Sources */,
 				BE66F8582AB5F753000F8C3F /* PostDetailsModel.swift in Sources */,
+				BE2361E32AB736BD0034D0EA /* ViewModelState.swift in Sources */,
 				BECFD5C62AB44D2400C2B203 /* AppDelegate.swift in Sources */,
 				BE66F8512AB5DEF9000F8C3F /* LikesStackView.swift in Sources */,
 				BECFD5C82AB44D2400C2B203 /* SceneDelegate.swift in Sources */,
+				BE2361E62AB737010034D0EA /* ViewModelDelegate.swift in Sources */,
 				BECFD5DF2AB45A4000C2B203 /* PostListTableViewCell.swift in Sources */,
 				BECFD5E32AB45E5300C2B203 /* MainResponse.swift in Sources */,
 				BECFD5E92AB465A400C2B203 /* Constants.swift in Sources */,

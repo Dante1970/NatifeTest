@@ -8,29 +8,12 @@
 import UIKit
 import Kingfisher
 
-class PostDetailsViewController: UIViewController {
+class PostDetailsViewController: UIViewController, ViewModelDelegate {
     
     private let vm = PostDetailsViewModel()
     
     private let postID: Int
-    private var post: PostDetails? {
-        willSet(newPost) {
-            DispatchQueue.main.async {
-                guard let post = newPost else { return }
-                
-                self.titleLabel.text = post.title
-                self.descriptionLabel.text = post.text
-                self.likesStackView.likesLabel.text = "\(post.likesCount)"
-                self.dateStackView.dateLabel.text = "\(post.formattedDate())"
-                
-                self.navigationItem.title = newPost?.title
-
-                self.scrollView.contentSize = CGSize(
-                    width: self.view.bounds.width,
-                    height: self.calculateContentHeight())
-            }
-        }
-    }
+    private var post: PostDetails?
     
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -69,7 +52,6 @@ class PostDetailsViewController: UIViewController {
     
     private let likesStackView = LikesStackView()
     private let dateStackView = DateStackView()
-    
     private lazy var likesAndDateStackView: UIStackView = {
         let spacer = UIView()
         let stackView = UIStackView(arrangedSubviews: [likesStackView, spacer, dateStackView])
@@ -100,14 +82,50 @@ class PostDetailsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        getData()
-        configureUI()
+        updateUI()
+    }
+    
+    func updateUI() {
+        switch vm.state {
+        case .initial:
+            vm.delegate = self
+            activityIndicatorView.isHidden = true
+            getData()
+            configureUI()
+        case .loading:
+            activityIndicatorView.isHidden = false
+            activityIndicatorView.startAnimating()
+        case .loaded:
+            activityIndicatorView.isHidden = true
+            activityIndicatorView.stopAnimating()
+            
+            guard let post = post else { return }
+            
+            titleLabel.text = post.title
+            descriptionLabel.text = post.text
+            likesStackView.likesLabel.text = "\(String(describing: post.likesCount))"
+            dateStackView.dateLabel.text = "\(String(describing: post.formattedDate()))"
+
+            navigationItem.title = post.title
+
+            self.scrollView.contentSize = CGSize(
+                width: self.view.bounds.width,
+                height: self.calculateContentHeight())
+        case .error(message: let message):
+            print(message)
+        }
     }
     
     // MARK: - Private func
     
+    func didUpdateState() {
+        DispatchQueue.main.async { [weak self] in
+            self?.updateUI()
+        }
+    }
+    
     private func getData() {
-        vm.getPost(postID: "\(postID)") { [weak self] post in
+        vm.getPostDetails(postID: "\(postID)") { [weak self] post in
             guard let self = self else { return }
             self.post = post
             self.getImage(urlString: post.postImage)
@@ -132,8 +150,8 @@ class PostDetailsViewController: UIViewController {
         
         view.addSubview(scrollView)
         scrollView.addSubview(imageView)
-        imageView.addSubview(activityIndicatorView)
         scrollView.addSubview(mainStackView)
+        mainStackView.addSubview(activityIndicatorView)
         
         setupConstraints()
     }
@@ -169,12 +187,12 @@ class PostDetailsViewController: UIViewController {
             imageView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             imageView.heightAnchor.constraint(equalToConstant: view.bounds.width),
             
-            activityIndicatorView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
-            activityIndicatorView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor),
-            
             mainStackView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 20),
             mainStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: horizontalPadding),
-            mainStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -horizontalPadding)
+            mainStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -horizontalPadding),
+            
+            activityIndicatorView.centerXAnchor.constraint(equalTo: mainStackView.centerXAnchor),
+            activityIndicatorView.centerYAnchor.constraint(equalTo: mainStackView.centerYAnchor)
         ])
     }
 }
