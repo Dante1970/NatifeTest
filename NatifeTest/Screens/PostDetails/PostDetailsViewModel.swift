@@ -22,20 +22,4 @@ class PostDetailsViewModel {
             }
         }
     }
-    
-    func getImage(fromURL url: String?, completion: @escaping (UIImage) -> ()) {
-        guard let url = url else {
-            print("Error! url is nil.")
-            return
-        }
-        
-        ImageService.shared.getImage(fromURL: url) { results in
-            switch results {
-            case .success(let image):
-                completion(image)
-            case .failure(let error):
-                print("\(error.localizedDescription)")
-            }
-        }
-    }
 }

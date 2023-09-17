@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class PostDetailsViewController: UIViewController {
     
@@ -108,19 +109,19 @@ class PostDetailsViewController: UIViewController {
     private func getData() {
         vm.getPost(postID: "\(postID)") { [weak self] post in
             guard let self = self else { return }
-            
             self.post = post
-            
-            DispatchQueue.main.async {
-                self.activityIndicatorView.startAnimating()
-            }
-            
-            self.vm.getImage(fromURL: post.postImage) { image in
-                DispatchQueue.main.async {
-                    self.imageView.image = image
-                    self.activityIndicatorView.stopAnimating()
-                }
-            }
+            self.getImage(urlString: post.postImage)
+        }
+    }
+    
+    private func getImage(urlString: String) {
+        guard let url = URL(string: urlString) else { return }
+        
+        DispatchQueue.main.async {
+            self.imageView.kf.indicatorType = .activity
+            self.imageView.kf.setImage(
+                with: url,
+                options: [ .transition(.fade(0.7)) ])
         }
     }
     
