@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct Posts: Codable {
-    let posts: [PostList]
+struct MainResponse: Codable {
+    let posts: [Post]
 }
 
-struct PostList: Codable, Comparable {
+struct Post: Codable, Comparable {
     
     let postID, timeshamp: Int
     let title, previewText: String
@@ -24,12 +24,12 @@ struct PostList: Codable, Comparable {
         case likesCount = "likes_count"
     }
     
-    static func < (lhs: PostList, rhs: PostList) -> Bool {
+    static func < (lhs: Post, rhs: Post) -> Bool {
         return lhs.timeshamp < rhs.timeshamp
     }
 }
 
-extension PostList {
+extension Post {
     func daysAgo() -> String {
         let calendar = Calendar.current
         let currentDate = Date()

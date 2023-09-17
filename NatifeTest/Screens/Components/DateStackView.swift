@@ -13,7 +13,7 @@ class DateStackView: UIStackView {
         let image = UIImage(systemName: "clock.arrow.circlepath")
         let imageView = UIImageView(image: image)
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = UIColor.theme.secondaryText
+        imageView.tintColor = ColorTheme.secondaryText
         
         imageView.layer.shadowColor = UIColor.black.cgColor
         imageView.layer.shadowOffset = CGSize(width: 0, height: 0)
@@ -24,7 +24,7 @@ class DateStackView: UIStackView {
     
     let dateLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.theme.secondaryText
+        label.textColor = ColorTheme.secondaryText
         return label
     }()
     

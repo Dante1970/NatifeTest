@@ -1,5 +1,5 @@
 //
-//  PostDetailViewController.swift
+//  PostDetailsViewController.swift
 //  NatifeTest
 //
 //  Created by Сергей Белоусов on 16.09.2023.
@@ -7,12 +7,12 @@
 
 import UIKit
 
-class PostDetailViewController: UIViewController {
+class PostDetailsViewController: UIViewController {
     
-    private let vm = PostDetailViewModel()
+    private let vm = PostDetailsViewModel()
     
     private let postID: Int
-    private var post: Post? {
+    private var post: PostDetails? {
         willSet(newPost) {
             DispatchQueue.main.async {
                 guard let post = newPost else { return }
@@ -127,7 +127,7 @@ class PostDetailViewController: UIViewController {
     // MARK: Make UI
     
     private func configureUI() {
-        view.backgroundColor = UIColor.theme.background
+        view.backgroundColor = ColorTheme.background
         
         view.addSubview(scrollView)
         scrollView.addSubview(imageView)

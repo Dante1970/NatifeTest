@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  PostListViewController.swift
 //  NatifeTest
 //
 //  Created by Сергей Белоусов on 15.09.2023.
@@ -7,13 +7,13 @@
 
 import UIKit
 
-class PostsViewController: UIViewController {
+class PostListViewController: UIViewController {
     
-    private let vm = PostsViewModel()
+    private let vm = PostListViewModel()
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: view.bounds, style: .plain)
-        tableView.register(PostsTableViewCell.self, forCellReuseIdentifier: PostsTableViewCell.identifier)
+        tableView.register(PostListTableViewCell.self, forCellReuseIdentifier: PostListTableViewCell.identifier)
         tableView.separatorStyle = .none
         tableView.rowHeight = UITableView.automaticDimension
         return tableView
@@ -47,7 +47,7 @@ class PostsViewController: UIViewController {
             action: #selector(showSortAlert))
         navigationItem.rightBarButtonItem = sortButton
         
-        tableView.backgroundColor = UIColor.theme.background
+        tableView.backgroundColor = ColorTheme.background
         
         view.addSubview(tableView)
     }
@@ -73,13 +73,13 @@ class PostsViewController: UIViewController {
 
 // MARK: - UITableViewDelegate
 
-extension PostsViewController: UITableViewDelegate {
+extension PostListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let selectedCell = vm.posts[indexPath.row]
         
-        let destination = PostDetailViewController(postID: selectedCell.postID)
+        let destination = PostDetailsViewController(postID: selectedCell.postID)
         
         navigationController?.pushViewController(destination, animated: true)
     }
@@ -87,7 +87,7 @@ extension PostsViewController: UITableViewDelegate {
 
 // MARK: - UITableViewDataSource
 
-extension PostsViewController: UITableViewDataSource {
+extension PostListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return vm.posts.count
@@ -95,7 +95,7 @@ extension PostsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: PostsTableViewCell.identifier, for: indexPath) as! PostsTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: PostListTableViewCell.identifier, for: indexPath) as! PostListTableViewCell
         
         cell.tableView = tableView
         cell.post = vm.posts[indexPath.row]

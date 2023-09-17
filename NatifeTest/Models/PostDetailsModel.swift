@@ -1,5 +1,5 @@
 //
-//  Post.swift
+//  PostDetailsModel.swift
 //  NatifeTest
 //
 //  Created by Сергей Белоусов on 16.09.2023.
@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct PostModel: Codable {
-    let post: Post
+struct PostDetailsModel: Codable {
+    let post: PostDetails
 }
 
-struct Post: Codable {
+struct PostDetails: Codable {
     let postID, timeshamp: Int
     let title, text: String
     let postImage: String
@@ -24,7 +24,7 @@ struct Post: Codable {
     }
 }
 
-extension Post {
+extension PostDetails {
     func formattedDate() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US")

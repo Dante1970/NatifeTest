@@ -1,5 +1,5 @@
 //
-//  PostsTableViewCell.swift
+//  PostListTableViewCell.swift
 //  NatifeTest
 //
 //  Created by Сергей Белоусов on 15.09.2023.
@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class PostsTableViewCell: UITableViewCell {
+class PostListTableViewCell: UITableViewCell {
     
     static let identifier = "PostsTableViewCell"
     
@@ -16,7 +16,7 @@ class PostsTableViewCell: UITableViewCell {
     
     private var showFullTitle: Bool = true
     
-    var post: PostList? {
+    var post: Post? {
         willSet(newPost) {
             guard let post = newPost else { return }
             
@@ -32,7 +32,7 @@ class PostsTableViewCell: UITableViewCell {
         let view = UIView()
         view.backgroundColor = .gray
         view.layer.cornerRadius = 10
-        view.backgroundColor = UIColor.theme.contentBlock
+        view.backgroundColor = ColorTheme.contentBlock
         
         view.layer.shadowRadius = 5
         view.layer.shadowOffset = CGSize(width: 5, height: 5)
@@ -54,7 +54,7 @@ class PostsTableViewCell: UITableViewCell {
         button.setTitle("Expand", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         button.setTitleColor(UIColor.white, for: .normal)
-        button.backgroundColor = UIColor.theme.accent
+        button.backgroundColor = ColorTheme.accent
         button.layer.cornerRadius = 10
         button.isHidden = true
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
@@ -126,7 +126,7 @@ class PostsTableViewCell: UITableViewCell {
     // MARK: Make UI
     
     private func configureUI() {
-        contentView.backgroundColor = UIColor.theme.background
+        contentView.backgroundColor = ColorTheme.background
         
         contentView.addSubview(customView)
         customView.addSubview(mainStackView)
